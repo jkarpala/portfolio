@@ -1,1 +1,0 @@
-javascript:document.getElementById("user_profile_sidebar_fill_color").value='rgba(66,73,87,0.292969)';void(0);
