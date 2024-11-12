@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Acme - Saas & Software</title>
+  <!-- favicon -->
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <!-- Main Css -->
+  <link href="css/style.css" rel="stylesheet" type="text/css" id="theme-opt" />
+  <link href="css/colors/default.css" rel="stylesheet" id="color-opt">
+</head>
+
+<body>
+
+  <div class="back-to-home rounded d-none d-sm-block">
+    <a href="/" class="btn btn-icon btn-soft-primary"><i data-feather="home" class="icons"></i></a>
+  </div>
+
+  <section class="bg-home d-flex align-items-top mt-5">
+    <div class="container">
+      <div class="row align-items-center justify-content-center">
+        <div class="col-lg-6 ">
+          <div class="card shadow rounded border-0">
+            <div class="card-body">
+              <h4 class="card-title text-center">
+                User Geolocation Access
+              </h4>
+              <div class="col-md-12 mb-3">
+                <div class="d-grid">
+                  <a class="btn current-pos btn-secondary js-link" href="javascript:getCurrentPosition()">
+                    Get Current Position
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="d-grid">
+                  <a class="btn watch-pos btn-secondary js-link" href="javascript:watchPosition()">
+                    Watch Position
+                  </a>
+                </div>
+              </div>
+
+              <div id="user-details-form">
+                <label class="form-label text-center">Latitude</label>
+                <input type="text" name="latitude" class="form-control ps-5" placeholder="Latitude">
+
+                <label class="form-label text-center">Longitude</label>
+                <input type="text" name="longitude" class="form-control ps-5" placeholder="Longitude">
+
+                <label class="form-label text-center">Accuracy</label>
+                <input type="text" name="accuracy" class="form-control ps-5" placeholder="Accuracy">
+              </div>
+
+              <div id="login-form">
+
+              </div>
+            </div>
+          </div>
+        </div> <!--end col-->
+      </div><!--end row-->
+    </div> <!--end container-->
+  </section><!--end section-->
+
+  <script>
+    function getCurrentPosition() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            console.log('Latitude:', position.coords.latitude);
+            console.log('Longitude:', position.coords.longitude);
+            console.log('Accuracy:', position.coords.accuracy, 'meters');
+            document.querySelector('input[name="latitude"]').value = position.coords.latitude;
+            document.querySelector('input[name="longitude"]').value = position.coords.longitude;
+            document.querySelector('input[name="accuracy"]').value = position.coords.accuracy;
+          },
+          error => {
+            console.error('Error getting location:', error.message);
+          }
+        );
+      } else {
+        console.log('Geolocation is not supported by this browser.');
+      }
+
+    }
+
+    function watchPosition() {
+      if (navigator.geolocation) {
+        const watchId = navigator.geolocation.watchPosition(
+          position => {
+            console.log('Updated Latitude:', position.coords.latitude);
+            console.log('Updated Longitude:', position.coords.longitude);
+            console.log('Updated Accuracy:', position.coords.accuracy, 'meters');
+            document.querySelector('input[name="latitude"]').value = position.coords.latitude;
+            document.querySelector('input[name="longitude"]').value = position.coords.longitude;
+            document.querySelector('input[name="accuracy"]').value = position.coords.accuracy;
+          },
+          error => {
+            console.error('Error tracking location:', error.message);
+          }
+        );
+
+        // To stop watching:
+        navigator.geolocation.clearWatch(watchId);
+      } else {
+        console.log('Geolocation is not supported by this browser.');
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>

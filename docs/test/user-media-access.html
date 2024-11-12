@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Acme - Saas & Software</title>
+  <!-- favicon -->
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <!-- Main Css -->
+  <link href="css/style.css" rel="stylesheet" type="text/css" id="theme-opt" />
+  <link href="css/colors/default.css" rel="stylesheet" id="color-opt">
+</head>
+
+<body>
+
+  <div class="back-to-home rounded d-none d-sm-block">
+    <a href="/" class="btn btn-icon btn-soft-primary"><i data-feather="home" class="icons"></i></a>
+  </div>
+
+  <section class="bg-home d-flex align-items-top mt-5">
+    <div class="container">
+      <div class="row align-items-center justify-content-center">
+        <div class="col-lg-6 ">
+          <div class="card shadow rounded border-0">
+            <div class="card-body">
+              <h4 class="card-title text-center">
+                User Media Access
+              </h4>
+              <div class="col-md-12 mb-3">
+                <div class="d-grid">
+                  <a class="btn mic-access btn-secondary js-link" href="javascript:requestMicAccess()">
+                    Request Mic Access
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="d-grid">
+                  <a class="btn cam-access btn-secondary js-link" href="javascript:requestCamAccess()">
+                    Request Cam Access
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="d-grid">
+                  <a class="btn cam-mic-access btn-secondary js-link" href="javascript:requestMicAndCamAccess()">
+                    Request Mic + Cam Access
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="d-grid">
+                  <a class="btn lecacy-access btn-secondary js-link" href="javascript:requestLegacyMicAndCamAccess()">
+                    Request Deprecated Mic + Cam Access
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="d-grid">
+                  <a class="btn wbk-access btn-secondary js-link" href="javascript:requestWebKitMicAndCamAccess()">
+                    Request Webkit Mic + Cam Access
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="d-grid">
+                  <a class="btn moz-access btn-secondary js-link" href="javascript:requestWebKitMicAndCamAccess()">
+                    Request Mozilla Mic + Cam Access
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="d-grid">
+                  <a class="btn speech-access btn-secondary js-link" href="javascript:requestSpeechAccess()">
+                    Request Speech Access
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="d-grid">
+                  Request Camera Input Access
+                  <input type="file" accept="image/*" capture="camera">
+                </div>
+              </div>
+
+              <video id="video"/>
+
+              </div>
+            </div>
+          </div>
+        </div> <!--end col-->
+      </div><!--end row-->
+    </div> <!--end container-->
+  </section><!--end section-->
+
+  <script>
+    function requestMicAccess() {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          const mediaRecorder = new MediaRecorder(stream);
+          const audioChunks = [];
+
+          mediaRecorder.ondataavailable = event => {
+            audioChunks.push(event.data);
+          };
+
+          mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            audio.play(); // or save audioBlob for further processing
+          };
+
+          mediaRecorder.start();
+
+          // Stop recording after 2 seconds
+          setTimeout(() => mediaRecorder.stop(), 2000);
+        })
+        .catch(error => console.error('Error accessing media devices:', error));
+
+    }
+
+    function requestSpeechAccess() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      if (!recognition) {
+        console.error('Speech recognition not supported');
+        return;
+      }
+      recognition.onstart = () => {
+        console.log('Speech recognition started');
+      };
+      recognition.onresult = event => {
+        console.log('Transcript:', event.results[0][0].transcript);
+      };
+      recognition.start();
+
+      // Stop recording after 2 seconds
+      setTimeout(() => recognition.stop(), 2000);
+
+    }
+
+    function requestCamAccess() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          const video =  document.querySelector("video");
+          video.srcObject = stream;
+          video.onloadedmetadata = (e) => {
+              video.play();
+            };
+        })
+        .catch(error => console.error('Error accessing the camera:', error));
+    }
+
+    function requestMicAndCamAccess() {
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(stream => {
+          const video = document.querySelector('video');
+          video.srcObject = stream;
+          video.onloadedmetadata = (e) => {
+              video.play();
+            };
+        })
+        .catch(error => console.error('Error accessing the camera:', error));
+    }
+
+
+    function requestLegacyMicAndCamAccess() {
+      navigator.getUserMedia({ video: true, audio: true }, (stream) => {
+        const video = document.querySelector('video');
+        video.srcObject = stream;
+        video.onloadedmetadata = (e) => {
+              video.play();
+            };
+      }, (error) => console.error('Error accessing the camera:', error))
+    }
+
+
+    function requestWebKitMicAndCamAccess() {
+      if ( navigator.webkitGetUserMedia) {
+        navigator.webkitGetUserMedia(
+          { audio: true, video: { width: 1280, height: 720 } },
+          (stream) => {
+            const video = document.querySelector("video");
+            video.srcObject = stream;
+            video.onloadedmetadata = (e) => {
+              video.play();
+            };
+          },
+          (err) => {
+            console.error(`The following error occurred: ${err.name}`);
+          },
+        );
+      } else {
+        console.log("webkitGetUserMedia not supported");
+      }
+    }
+
+
+    function requestMozMicAndCamAccess() {
+      if (navigator.mozGetUserMedia) {
+        navigator.mozGetUserMedia(
+          { audio: true, video: { width: 1280, height: 720 } },
+          (stream) => {
+            const video = document.querySelector("video");
+            video.srcObject = stream;
+            video.onloadedmetadata = (e) => {
+              video.play();
+            };
+          },
+          (err) => {
+            console.error(`The following error occurred: ${err.name}`);
+          },
+        );
+      } else {
+        console.log("mozGetUserMedia not supported");
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>
