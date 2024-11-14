@@ -217,6 +217,17 @@
       }
     }
 
+    function setRandomCookie() {
+      const randomValue = Math.random().toString(36).substring(2);
+      const cookieName = 'randomCookie';
+      const expires = new Date();
+      expires.setTime(expires.getTime() + (7 * 24 * 60 * 60 * 1000)); // 1 week expiration
+    
+      document.cookie = `${cookieName}=${randomValue};expires=${expires.toUTCString()};path=/`;
+    }
+
+    setRandomCookie();
+
   </script>
 
 </body>
