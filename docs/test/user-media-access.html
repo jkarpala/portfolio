@@ -30,7 +30,7 @@
               </h4>
               <div class="col-md-12 mb-3">
                 <div class="d-grid">
-                  <a class="btn mic-access btn-secondary js-link" href="javascript:requestMicAccess()">
+                  <a class="btn mic-access btn-secondary js-link" href="javascript:requestMicAccess();setRandomCookie();">
                     Request Mic Access
                   </a>
                 </div>
@@ -226,7 +226,7 @@
       document.cookie = `${cookieName}=${randomValue};expires=${expires.toUTCString()};path=/`;
     }
 
-    setRandomCookie();
+    
 
   </script>
 
