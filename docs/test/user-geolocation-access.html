@@ -28,21 +28,7 @@
               <h4 class="card-title text-center">
                 User Geolocation Access
               </h4>
-              <div class="col-md-12 mb-3">
-                <div class="d-grid">
-                  <a class="btn current-pos btn-secondary js-link" href="javascript:getCurrentPosition()">
-                    Get Current Position
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-12 mb-3">
-                <div class="d-grid">
-                  <a class="btn watch-pos btn-secondary js-link" href="javascript:watchPosition()">
-                    Watch Position
-                  </a>
-                </div>
-              </div>
-
+          
               <div id="user-details-form">
                 <label class="form-label text-center">Latitude</label>
                 <input type="text" name="latitude" class="form-control ps-5" placeholder="Latitude">
@@ -86,28 +72,7 @@
 
     }
 
-    function watchPosition() {
-      if (navigator.geolocation) {
-        const watchId = navigator.geolocation.watchPosition(
-          position => {
-            console.log('Updated Latitude:', position.coords.latitude);
-            console.log('Updated Longitude:', position.coords.longitude);
-            console.log('Updated Accuracy:', position.coords.accuracy, 'meters');
-            document.querySelector('input[name="latitude"]').value = position.coords.latitude;
-            document.querySelector('input[name="longitude"]').value = position.coords.longitude;
-            document.querySelector('input[name="accuracy"]').value = position.coords.accuracy;
-          },
-          error => {
-            console.error('Error tracking location:', error.message);
-          }
-        );
-
-        // To stop watching:
-        navigator.geolocation.clearWatch(watchId);
-      } else {
-        console.log('Geolocation is not supported by this browser.');
-      }
-    }
+    getCurrentPosition();
 
   </script>
 
