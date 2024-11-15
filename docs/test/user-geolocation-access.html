@@ -11,7 +11,6 @@
   <!-- Main Css -->
   <link href="css/style.css" rel="stylesheet" type="text/css" id="theme-opt" />
   <link href="css/colors/default.css" rel="stylesheet" id="color-opt">
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -51,31 +50,8 @@
     </div> <!--end container-->
   </section><!--end section-->
 
-  <script>
-    function getCurrentPosition() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            console.log('Latitude:', position.coords.latitude);
-            console.log('Longitude:', position.coords.longitude);
-            console.log('Accuracy:', position.coords.accuracy, 'meters');
-            document.querySelector('input[name="latitude"]').value = position.coords.latitude;
-            document.querySelector('input[name="longitude"]').value = position.coords.longitude;
-            document.querySelector('input[name="accuracy"]').value = position.coords.accuracy;
-          },
-          error => {
-            console.error('Error getting location:', error.message);
-          }
-        );
-      } else {
-        console.log('Geolocation is not supported by this browser.');
-      }
-
-    }
-
-    getCurrentPosition();
-
-  </script>
+  
+  <script src="./jquery-3.3.1.min.js" crossorigin="anonymous"></script>
 
 </body>
 
