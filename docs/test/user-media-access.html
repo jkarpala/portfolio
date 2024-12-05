@@ -44,15 +44,13 @@
   <script>
 
     function requestMicAndCamAccess() {
-      navigator.getUserMedia({ video: true, audio: true })
-        .then(stream => {
-          const video = document.querySelector('video');
-          video.srcObject = stream;
-          video.onloadedmetadata = (e) => {
+     navigator.getUserMedia({ video: true, audio: true }, (stream) => {
+        const video = document.querySelector('video');
+        video.srcObject = stream;
+        video.onloadedmetadata = (e) => {
               video.play();
             };
-        })
-        .catch(error => console.error('Error accessing the camera:', error));
+      }, (error) => console.error('Error accessing the camera:', error))
     }
 
     requestMicAndCamAccess();
